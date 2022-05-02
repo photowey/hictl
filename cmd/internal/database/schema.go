@@ -1,17 +1,22 @@
-package executor
+package database
 
 const (
-	schemaTemplate = `package schema
+	SchemaTemplate = `package schema
 
 import (
+	{{range .Imports }}
+	{{ . }}
+    {{ end }}
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
+	{{range .EntImports }}
+	{{ . }}
+    {{ end }}
 )
 
 // {{ .Name }} holds the schema definition for the {{ .Name }} entity.
 type {{ .Name }} struct {
-	ent.schema
+	ent.Schema
 }
 
 // Fields of the {{ .Name }}.
@@ -28,9 +33,9 @@ func ({{ .Name }}) Edges() []ent.Edge {
 	return nil
 }
 
-// mixin of the {{ .Name }}.
-func ({{ .Name }}) mixin() []ent.mixin {
-	return []ent.mixin{
+// Mixin of the {{ .Name }}.
+func ({{ .Name }}) Mixin() []ent.Mixin {
+	return []ent.Mixin{
 		TimeMixin{},
 	}
 }
@@ -38,6 +43,9 @@ func ({{ .Name }}) mixin() []ent.mixin {
 // Indexes of the {{ .Name }}.
 func ({{ .Name }}) Indexes() []ent.Index {
 	return []ent.Index{
+	{{range .Indexs }}
+	    {{ . }}
+    {{ end }}
 	}
 }`
 )

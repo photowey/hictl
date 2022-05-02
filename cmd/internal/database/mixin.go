@@ -1,7 +1,7 @@
-package executor
+package database
 
 const (
-	mixinTemplate = `package schema
+	MixinTemplate = `package schema
 
 import (
 	"time"
@@ -12,7 +12,7 @@ import (
 )
 
 type TimeMixin struct {
-	mixin.schema
+	mixin.Schema
 }
 
 func (TimeMixin) Fields() []ent.Field {
