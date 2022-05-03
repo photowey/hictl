@@ -14,12 +14,15 @@ import (
 	`unicode`
 
 	_ "github.com/go-sql-driver/mysql"
+	`github.com/hictl`
 	`github.com/hictl/cmd/internal/common/cmdz`
 	`github.com/hictl/cmd/internal/common/filez`
 	`github.com/hictl/cmd/internal/common/jsonz`
 	`github.com/hictl/cmd/internal/common/stringz`
 	db `github.com/hictl/cmd/internal/database`
 	`github.com/hictl/hictlc/gen`
+	`github.com/hictl/pkg/color`
+	`github.com/hictl/pkg/logger`
 	`github.com/spf13/cobra`
 )
 
@@ -50,6 +53,22 @@ const (
 var (
 	SkipFields = []string{"created_at", "updated_at"}
 )
+
+func VersionCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "version",
+		Short: "show the version of hictl cmd",
+		Example: examples(
+			"hictl version Example",
+			"hictl version",
+		),
+		Run: func(cmd *cobra.Command, args []string) {
+			logger.Sprintf(color.Cyan("hictl")+" version: %s", hictl.Version)
+		},
+	}
+
+	return cmd
+}
 
 func InitCmd() *cobra.Command {
 	var target string
@@ -95,8 +114,7 @@ type SchemaTemplate struct {
 func writeSchema(target string, databaseName string, names []string) error {
 	var database *db.Database
 	if emptyString != strings.TrimSpace(databaseName) {
-		home, _ := os.UserHomeDir()
-		hictlHome := filepath.Join(home, hictlHomeDir)
+		hictlHome := hictl.HomeDir
 		hictl := &db.Hictl{}
 		hictlConfigFile := filepath.Join(hictlHome, strings.ToLower(hictlConfig))
 		if filez.FileExists(hictlHome, hictlConfig) {

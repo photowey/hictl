@@ -17,6 +17,7 @@ func main() {
 		},
 	} // Replace ent command with hictl
 	cmd.AddCommand(
+		executor.VersionCmd(),
 		executor.InitCmd(),
 	)
 	_ = cmd.Execute()

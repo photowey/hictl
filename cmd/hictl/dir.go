@@ -7,11 +7,11 @@ import (
 	`path/filepath`
 	`strings`
 
+	`github.com/hictl`
 	`github.com/hictl/cmd/internal/common/filez`
 )
 
 const (
-	hictlHomeDir       = ".hictl"
 	hictlConfig        = "hictl.json"
 	hictlConfigContent = `{
   "databases": {}
@@ -19,8 +19,7 @@ const (
 )
 
 func checkHictlHome() {
-	home, _ := os.UserHomeDir()
-	hictlHome := filepath.Join(home, hictlHomeDir)
+	hictlHome := hictl.HomeDir
 	if ok := filez.DirExists(hictlHome); !ok {
 		if err := os.MkdirAll(hictlHome, os.ModePerm); err != nil {
 			panic(fmt.Sprintf("mkdir hictl home dir:%s error:%v", hictlHome, err))

@@ -12,7 +12,7 @@ import (
 func exists(names ...string) bool {
 	var _, err = os.Stat(filepath.Join(names...))
 
-	return err == nil
+	return err == nil || os.IsExist(err)
 }
 
 func DirExists(path string) bool {
