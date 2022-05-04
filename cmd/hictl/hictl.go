@@ -3,12 +3,14 @@ package main
 import (
 	`log`
 
-	`github.com/hictl/cmd/internal/executor`
+	`github.com/hictl/cmd/internal/cmds/schema`
+	`github.com/hictl/cmd/internal/cmds/version`
+	`github.com/hictl/cmd/internal/home`
 	`github.com/spf13/cobra`
 )
 
 func main() {
-	checkHictlHome()
+	home.HictlHome()
 	log.SetFlags(0)
 	cmd := &cobra.Command{
 		Use: "hictl",
@@ -17,8 +19,8 @@ func main() {
 		},
 	} // Replace ent command with hictl
 	cmd.AddCommand(
-		executor.VersionCmd(),
-		executor.InitCmd(),
+		version.Cmd(),
+		schema.Cmd(),
 	)
 	_ = cmd.Execute()
 }

@@ -1,4 +1,4 @@
-package executor
+package schema
 
 import (
 	`bytes`
@@ -16,13 +16,13 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	`github.com/hictl`
 	`github.com/hictl/cmd/internal/common/cmdz`
+	`github.com/hictl/cmd/internal/common/constant`
 	`github.com/hictl/cmd/internal/common/filez`
+	`github.com/hictl/cmd/internal/common/helper`
 	`github.com/hictl/cmd/internal/common/jsonz`
 	`github.com/hictl/cmd/internal/common/stringz`
 	db `github.com/hictl/cmd/internal/database`
 	`github.com/hictl/hictlc/gen`
-	`github.com/hictl/pkg/color`
-	`github.com/hictl/pkg/logger`
 	`github.com/spf13/cobra`
 )
 
@@ -33,10 +33,7 @@ const (
 	schema = "schema"
 	mixin  = "mixin"
 
-	hictlHomeDir = ".hictl"
-	hictlConfig  = "hictl.json"
-
-	emptyString = ""
+	hictlConfig = "hictl.json"
 )
 
 const (
@@ -54,29 +51,13 @@ var (
 	SkipFields = []string{"created_at", "updated_at"}
 )
 
-func VersionCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "version",
-		Short: "show the version of hictl cmd",
-		Example: examples(
-			"hictl version Example",
-			"hictl version",
-		),
-		Run: func(cmd *cobra.Command, args []string) {
-			logger.Sprintf(color.Cyan("hictl")+" version: %s", hictl.Version)
-		},
-	}
-
-	return cmd
-}
-
-func InitCmd() *cobra.Command {
+func Cmd() *cobra.Command {
 	var target string
 	var database string
 	cmd := &cobra.Command{
 		Use:   "init [flags] [schemas]",
 		Short: "initialize an environment with zero or more schemas",
-		Example: examples(
+		Example: helper.Examples(
 			"hictl init Example",
 			"hictl init --target entv1/schema --database users User Group",
 		),
@@ -90,17 +71,17 @@ func InitCmd() *cobra.Command {
 		},
 		Run: func(cmd *cobra.Command, names []string) {
 			if err := writeSchema(target, database, names); err != nil {
-				log.Fatalln(fmt.Errorf("hictl/init: %w", err))
+				log.Fatalln(fmt.Errorf("hictl/schema: %w", err))
 			}
 		},
 	}
 	cmd.Flags().StringVarP(&target, "target", "t", defaultSchema, "target directory for schemas")
-	cmd.Flags().StringVarP(&database, "database", "d", emptyString, "reverse Engineering database for schemas")
+	cmd.Flags().StringVarP(&database, "database", "d", constant.EmptyString, "reverse Engineering database for schemas")
 
 	return cmd
 }
 
-type SchemaTemplate struct {
+type Template struct {
 	Name       string   // name
 	Fields     []string // field list
 	Indexs     []string //  index list
@@ -113,21 +94,21 @@ type SchemaTemplate struct {
 //
 func writeSchema(target string, databaseName string, names []string) error {
 	var database *db.Database
-	if emptyString != strings.TrimSpace(databaseName) {
+	if constant.EmptyString != strings.TrimSpace(databaseName) {
 		hictlHome := hictl.HomeDir
-		hictl := &db.Hictl{}
+		hiConf := &db.Hictl{}
 		hictlConfigFile := filepath.Join(hictlHome, strings.ToLower(hictlConfig))
 		if filez.FileExists(hictlHome, hictlConfig) {
 			conf, _ := ioutil.ReadFile(hictlConfigFile)
-			err := jsonz.UnmarshalStruct(conf, hictl)
+			err := jsonz.UnmarshalStruct(conf, hiConf)
 			if err != nil {
 				return err
 			}
 		}
 
-		conf, ok := hictl.AcquireDatabase(databaseName)
+		conf, ok := hiConf.AcquireDatabase(databaseName)
 		if !ok {
-			return fmt.Errorf("the database config not present at hictl home-config file:%s", hictlConfigFile)
+			return fmt.Errorf("the database config not present at hiConf home-config file:%s", hictlConfigFile)
 		}
 
 		databasez, err := populateDatabaseInfo(conf, databaseName)
@@ -318,27 +299,27 @@ func writeSchemaTmpl(target string, name string, table *db.Table) error {
 		return fmt.Errorf("writing file %s: %w", schemaTarget, err)
 	}
 
-	cmdz.FormatCode(schemaTarget)
+	cmdz.FormatSourceCode(schemaTarget)
 
 	return nil
 }
 
-func populateSchemaTemplate(name string, table *db.Table) (*SchemaTemplate, error) {
-	st := &SchemaTemplate{
+func populateSchemaTemplate(name string, table *db.Table) (*Template, error) {
+	st := &Template{
 		Name:       name,
-		Fields:     make([]string, 0),
-		Indexs:     make([]string, 0),
-		Imports:    make([]string, 0),
-		EntImports: make([]string, 0),
+		Fields:     make([]string, constant.EmptyCollection),
+		Indexs:     make([]string, constant.EmptyCollection),
+		Imports:    make([]string, constant.EmptyCollection),
+		EntImports: make([]string, constant.EmptyCollection),
 	}
 
-	if nil != table && len(table.Columns) > 0 {
+	if nil != table && len(table.Columns) > constant.EmptyCollection {
 		for _, column := range table.Columns {
 			if stringz.ArrayContains(SkipFields, column.ColumnName) {
 				continue
 			}
 			fieldTemplate, pkg := determineFieldTemplate(column.DataType)
-			if emptyString != pkg {
+			if constant.EmptyString != pkg {
 				if stringz.ArrayNotContains(st.Imports, pkg) {
 					st.Imports = append(st.Imports, pkg)
 				}
@@ -348,7 +329,7 @@ func populateSchemaTemplate(name string, table *db.Table) (*SchemaTemplate, erro
 		}
 	}
 
-	if nil != table && len(table.Indexs) > 0 {
+	if nil != table && len(table.Indexs) > constant.EmptyCollection {
 		for _, indexz := range table.Indexs {
 			idx, fill := determineIndexSlice(indexz)
 			if fill {
@@ -379,23 +360,23 @@ func populateSchemaTemplate(name string, table *db.Table) (*SchemaTemplate, erro
 func determineFieldTemplate(databaseDataType string) (string, string) {
 	switch databaseDataType {
 	case "char", "varchar":
-		return stringDataTypeTemplate, emptyString
+		return stringDataTypeTemplate, constant.EmptyString
 	case "int", "tinyint", "middleint", "bigint":
-		return int64DataTypeTemplate, emptyString
+		return int64DataTypeTemplate, constant.EmptyString
 	case "timestamp", "datetime":
 		return timeDataTypeTemplate, "time"
 	}
 
-	return stringDataTypeTemplate, emptyString
+	return stringDataTypeTemplate, constant.EmptyString
 }
 
 func determineIndexSlice(idx *db.Index) (string, bool) {
 	switch idx.IndexColumn {
 	case "id": // the primary key is id
-		return emptyString, false
+		return constant.EmptyString, false
 	default:
 		if idx.IndexName == "PRIMARY" {
-			return emptyString, false // the primary key isn't id, such as: pid
+			return constant.EmptyString, false // the primary key isn't id, such as: pid
 		}
 
 		return idx.IndexColumn, true
@@ -414,7 +395,7 @@ func determineIndexTemplate(idx *db.Index) (string, bool) {
 func writeMixinTmpl(target string) error {
 	buffer := bytes.NewBuffer(nil)
 	tmplMixin := template.Must(template.New(mixin).Parse(db.MixinTemplate))
-	if err := tmplMixin.Execute(buffer, emptyString); err != nil {
+	if err := tmplMixin.Execute(buffer, constant.EmptyString); err != nil {
 		return fmt.Errorf("executing template %s: %w", "mixin", err)
 	}
 	mixinTarget := filepath.Join(target, strings.ToLower(mixin+".go"))
@@ -422,11 +403,4 @@ func writeMixinTmpl(target string) error {
 		return fmt.Errorf("writing file %s: %w", mixinTarget, err)
 	}
 	return nil
-}
-
-func examples(ex ...string) string {
-	for i := range ex {
-		ex[i] = "  " + ex[i]
-	}
-	return strings.Join(ex, "\n")
 }

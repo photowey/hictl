@@ -7,6 +7,8 @@ package filez
 import (
 	`os`
 	`path/filepath`
+
+	`github.com/hictl/cmd/internal/common/helper`
 )
 
 func exists(names ...string) bool {
@@ -25,4 +27,17 @@ func FileExists(target, name string) bool {
 
 func FileNotExists(target, name string) bool {
 	return !FileExists(target, name)
+}
+
+func Write(filename, content string) {
+	f, err := os.Create(filename)
+	helper.MustCheck(err)
+	defer Close(f)
+	_, err = f.WriteString(content)
+	helper.MustCheck(err)
+}
+
+func Close(f *os.File) {
+	err := f.Close()
+	helper.MustCheck(err)
 }

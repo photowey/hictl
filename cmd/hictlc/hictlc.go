@@ -4,7 +4,7 @@ import (
 	`fmt`
 	`log`
 
-	`github.com/hictl/cmd/internal/executor`
+	`github.com/hictl/cmd/internal/cmds/schema`
 	`github.com/spf13/cobra`
 )
 
@@ -17,7 +17,7 @@ func main() {
 		},
 	} // Replace entc command with hictlc
 	cmd.AddCommand(
-		executor.InitCmd(),
+		schema.Cmd(),
 	)
 	_ = cmd.Execute()
 }

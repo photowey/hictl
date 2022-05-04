@@ -1,4 +1,4 @@
-package main
+package home
 
 import (
 	`bytes`
@@ -18,7 +18,7 @@ const (
 }`
 )
 
-func checkHictlHome() {
+func HictlHome() {
 	hictlHome := hictl.HomeDir
 	if ok := filez.DirExists(hictlHome); !ok {
 		if err := os.MkdirAll(hictlHome, os.ModePerm); err != nil {

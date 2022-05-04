@@ -7,15 +7,13 @@ import (
 )
 
 const (
+	Home    string = ".hictl"
 	Version string = "1.0.0"
-)
-const (
-	HictlHome = ".hictl"
 )
 
 var (
 	Usr, _     = user.Current()
-	HomeDir    = filepath.Join(Usr.HomeDir, "/", HictlHome)
+	HomeDir    = filepath.Join(Usr.HomeDir, "/", Home)
 	CurrentDir = pwd()
 	GoPath     = os.Getenv("GOPATH")
 )

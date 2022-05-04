@@ -202,7 +202,7 @@ func (log *Logger) debug(message string, file string, line int, args ...any) {
 
 var log = GetInstance(os.Stdout)
 
-func Sprintf(message string, args ...any) {
+func Printf(message string, args ...any) {
 	log.print(message, args...)
 }
 
