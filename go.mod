@@ -3,6 +3,7 @@ module github.com/photowey/hictl
 go 1.18
 
 require (
+	entgo.io/ent v0.10.1
 	github.com/go-openapi/inflect v0.19.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/spf13/cobra v1.4.0

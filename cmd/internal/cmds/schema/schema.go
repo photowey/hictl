@@ -33,8 +33,6 @@ const (
 
 	schema = "schema"
 	mixin  = "mixin"
-
-	hictlConfig = "hictl.json"
 )
 
 const (
@@ -84,6 +82,7 @@ func Cmd() *cobra.Command {
 
 type Template struct {
 	Name       string   // name
+	TableName  string   // name
 	Fields     []string // field list
 	Indexs     []string //  index list
 	Imports    []string // import packages
@@ -98,8 +97,8 @@ func writeSchema(target string, databaseName string, names []string) error {
 	if constant.EmptyString != strings.TrimSpace(databaseName) {
 		hictlHome := hictl.HomeDir
 		hiConf := &db.Hictl{}
-		hictlConfigFile := filepath.Join(hictlHome, strings.ToLower(hictlConfig))
-		if filez.FileExists(hictlHome, hictlConfig) {
+		hictlConfigFile := filepath.Join(hictlHome, strings.ToLower(hictl.Config))
+		if filez.FileExists(hictlHome, hictl.Config) {
 			conf, _ := ioutil.ReadFile(hictlConfigFile)
 			err := jsonz.UnmarshalStruct(conf, hiConf)
 			if err != nil {
@@ -124,22 +123,22 @@ func writeSchema(target string, databaseName string, names []string) error {
 	}
 	if len(names) > 0 {
 		var table *db.Table
-		for _, name := range names {
+		for _, schemaName := range names { // User
 			if nil != database {
 				for _, tableInfo := range database.Tables {
-					entity := stringz.Pascal(tableInfo.Name)
-					if name == entity {
+					entity := stringz.Pascal(tableInfo.Name) // user -> User || users -> Users
+					if schemaName == entity || wrapSchemaName(schemaName) == entity {
 						table = tableInfo
 					}
 				}
 			}
-			if err := gen.ValidSchemaName(name); err != nil {
-				return fmt.Errorf("init schema %s: %w", name, err)
+			if err := gen.ValidSchemaName(schemaName); err != nil {
+				return fmt.Errorf("init schema %s: %w", schemaName, err)
 			}
-			if filez.FileExists(target, strings.ToLower(name+".go")) {
-				return fmt.Errorf("init schema %s: already exists", name)
+			if filez.FileExists(target, strings.ToLower(schemaName+".go")) {
+				return fmt.Errorf("init schema %s: already exists", schemaName)
 			}
-			err := writeSchemaTmpl(target, name, table)
+			err := writeSchemaTmpl(target, schemaName, table)
 			if err != nil {
 				return err
 			}
@@ -148,13 +147,17 @@ func writeSchema(target string, databaseName string, names []string) error {
 		if nil != database {
 			for _, table := range database.Tables {
 				entity := stringz.Pascal(table.Name)
-				if err := gen.ValidSchemaName(entity); err != nil {
-					return fmt.Errorf("init schema %s: %w", entity, err)
+				schemaName := entity
+				if strings.HasSuffix(schemaName, "s") { // Users || Groups -> User Group
+					schemaName = schemaName[:len(schemaName)-1]
 				}
-				if filez.FileExists(target, strings.ToLower(entity+".go")) {
-					return fmt.Errorf("init schema %s: already exists", entity)
+				if err := gen.ValidSchemaName(schemaName); err != nil {
+					return fmt.Errorf("init schema %s: %w", schemaName, err)
 				}
-				err := writeSchemaTmpl(target, entity, table)
+				if filez.FileExists(target, strings.ToLower(schemaName+".go")) {
+					return fmt.Errorf("init schema %s: already exists", schemaName)
+				}
+				err := writeSchemaTmpl(target, schemaName, table)
 				if err != nil {
 					return err
 				}
@@ -310,6 +313,7 @@ func writeSchemaTmpl(target string, name string, table *db.Table) error {
 func populateSchemaTemplate(name string, table *db.Table) (*Template, error) {
 	st := &Template{
 		Name:       name,
+		TableName:  table.Name,
 		Fields:     make([]string, constant.EmptyCollection),
 		Indexs:     make([]string, constant.EmptyCollection),
 		Imports:    make([]string, constant.EmptyCollection),
@@ -392,6 +396,10 @@ func determineIndexTemplate(idx *db.Index) (string, bool) {
 	}
 
 	return indexTemplate, false
+}
+
+func wrapSchemaName(inputSchema string) string {
+	return inputSchema + "s"
 }
 
 // writeSchemaTmpl writeSchema the mixin.tmpl

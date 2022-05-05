@@ -7,15 +7,16 @@ import (
 )
 
 const (
-	Home    string = ".hictl"
 	Version string = "1.0.0"
+	Home    string = ".hictl"
+	Config         = "hictl.json"
 )
 
 var (
-	Usr, _     = user.Current()
-	HomeDir    = filepath.Join(Usr.HomeDir, "/", Home)
-	CurrentDir = pwd()
-	GoPath     = os.Getenv("GOPATH")
+	Usr, _  = user.Current()
+	HomeDir = filepath.Join(Usr.HomeDir, "/", Home)
+	WorkDir = pwd()
+	GoPath  = os.Getenv("GOPATH")
 )
 
 func pwd() string {

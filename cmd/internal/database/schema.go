@@ -8,6 +8,8 @@ import (
 	{{ . }}
     {{ end }}
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	{{range .EntImports }}
 	{{ . }}
@@ -17,6 +19,13 @@ import (
 // {{ .Name }} holds the schema definition for the {{ .Name }} entity.
 type {{ .Name }} struct {
 	ent.Schema
+}
+
+// Annotations of the {{ .Name }}.
+func ({{ .Name }}) Annotations() []schema.Annotation {
+    return []schema.Annotation{
+        entsql.Annotation{Table: "{{ .TableName }}" },
+    }
 }
 
 // Fields of the {{ .Name }}.
