@@ -16,11 +16,11 @@ func (h *Hictl) AcquireDatabase(database string) (Config, bool) {
 }
 
 type Config struct {
-	Database string `json:"database" yaml:"database" toml:"database"` // database name
-	Url      string `json:"url" yaml:"url" toml:"url"`                // database url
-	Port     string `json:"port" yaml:"port" toml:"port"`             // database port
-	UserName string `json:"username" yaml:"username" toml:"username"` // database user name
-	Password string `json:"password" yaml:"password" toml:"password"` // database database password
+	Database string `json:"database" yaml:"database" toml:"database"` // database name -> tests
+	Host     string `json:"host" yaml:"host" toml:"host"`             // database host -> 192.168.1.11
+	Port     string `json:"port" yaml:"port" toml:"port"`             // database port -> 3307
+	UserName string `json:"username" yaml:"username" toml:"username"` // database user name -> root
+	Password string `json:"password" yaml:"password" toml:"password"` // database database password -> root
 }
 
 type Database struct {

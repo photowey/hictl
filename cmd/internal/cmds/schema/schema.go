@@ -171,7 +171,7 @@ func writeSchema(target string, databaseName string, names []string) error {
 }
 
 func populateDatabaseInfo(conf db.Config, databaseName string) (*db.Database, error) {
-	dsn := fmt.Sprintf(db.DsnTemplate, conf.UserName, conf.Password, conf.Url, conf.Port, conf.Database)
+	dsn := fmt.Sprintf(db.DsnTemplate, conf.UserName, conf.Password, conf.Host, conf.Port, conf.Database)
 	driver, err := sql.Open(db.DriverMysql, dsn)
 	if err != nil {
 		return nil, err
