@@ -1,4 +1,4 @@
-module github.com/hictl
+module github.com/photowey/hictl
 
 go 1.18
 
