@@ -3,7 +3,7 @@ package cmdz
 import (
 	`os/exec`
 
-	`github.com/hictl/pkg/logger`
+	`github.com/photowey/hictl/pkg/logger`
 )
 
 func FormatSourceCode(filename string) {

@@ -14,16 +14,17 @@ import (
 	`unicode`
 
 	_ "github.com/go-sql-driver/mysql"
-	`github.com/hictl`
-	`github.com/hictl/cmd/internal/common/cmdz`
-	`github.com/hictl/cmd/internal/common/constant`
-	`github.com/hictl/cmd/internal/common/filez`
-	`github.com/hictl/cmd/internal/common/helper`
-	`github.com/hictl/cmd/internal/common/jsonz`
-	`github.com/hictl/cmd/internal/common/stringz`
-	db `github.com/hictl/cmd/internal/database`
-	`github.com/hictl/hictlc/gen`
 	`github.com/spf13/cobra`
+
+	`github.com/photowey/hictl`
+	`github.com/photowey/hictl/cmd/internal/common/cmdz`
+	`github.com/photowey/hictl/cmd/internal/common/constant`
+	`github.com/photowey/hictl/cmd/internal/common/filez`
+	`github.com/photowey/hictl/cmd/internal/common/helper`
+	`github.com/photowey/hictl/cmd/internal/common/jsonz`
+	`github.com/photowey/hictl/cmd/internal/common/stringz`
+	db `github.com/photowey/hictl/cmd/internal/database`
+	`github.com/photowey/hictl/hictlc/gen`
 )
 
 const (

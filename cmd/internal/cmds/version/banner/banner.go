@@ -6,10 +6,10 @@ import (
 	`runtime`
 	`text/template`
 
-	`github.com/hictl`
-	`github.com/hictl/cmd/internal/common/helper`
-	`github.com/hictl/pkg/color`
-	`github.com/hictl/pkg/logger`
+	`github.com/photowey/hictl`
+	`github.com/photowey/hictl/cmd/internal/common/helper`
+	`github.com/photowey/hictl/pkg/color`
+	`github.com/photowey/hictl/pkg/logger`
 )
 
 type RuntimeReport struct {

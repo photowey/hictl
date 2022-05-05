@@ -8,7 +8,7 @@ import (
 	`os`
 	`path/filepath`
 
-	`github.com/hictl/cmd/internal/common/helper`
+	`github.com/photowey/hictl/cmd/internal/common/helper`
 )
 
 func exists(names ...string) bool {

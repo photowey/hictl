@@ -4,10 +4,11 @@ import (
 	`bytes`
 	`os`
 
-	`github.com/hictl/cmd/internal/cmds/version/banner`
-	`github.com/hictl/cmd/internal/common/helper`
-	`github.com/hictl/pkg/color`
 	`github.com/spf13/cobra`
+
+	`github.com/photowey/hictl/cmd/internal/cmds/version/banner`
+	`github.com/photowey/hictl/cmd/internal/common/helper`
+	`github.com/photowey/hictl/pkg/color`
 )
 
 const (

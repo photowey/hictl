@@ -4,7 +4,7 @@ import (
 	`os/exec`
 	`strings`
 
-	`github.com/hictl/pkg/logger`
+	`github.com/photowey/hictl/pkg/logger`
 )
 
 func MustCheck(err error) {

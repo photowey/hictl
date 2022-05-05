@@ -11,7 +11,7 @@ import (
 	`text/template`
 	`time`
 
-	`github.com/hictl/pkg/color`
+	`github.com/photowey/hictl/pkg/color`
 )
 
 const (

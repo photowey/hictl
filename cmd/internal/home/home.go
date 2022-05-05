@@ -7,8 +7,8 @@ import (
 	`path/filepath`
 	`strings`
 
-	`github.com/hictl`
-	`github.com/hictl/cmd/internal/common/filez`
+	`github.com/photowey/hictl`
+	`github.com/photowey/hictl/cmd/internal/common/filez`
 )
 
 const (

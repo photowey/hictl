@@ -3,10 +3,11 @@ package main
 import (
 	`log`
 
-	`github.com/hictl/cmd/internal/cmds/schema`
-	`github.com/hictl/cmd/internal/cmds/version`
-	`github.com/hictl/cmd/internal/home`
 	`github.com/spf13/cobra`
+
+	`github.com/photowey/hictl/cmd/internal/cmds/schema`
+	`github.com/photowey/hictl/cmd/internal/cmds/version`
+	`github.com/photowey/hictl/cmd/internal/home`
 )
 
 func main() {

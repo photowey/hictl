@@ -4,8 +4,9 @@ import (
 	`fmt`
 	`log`
 
-	`github.com/hictl/cmd/internal/cmds/schema`
 	`github.com/spf13/cobra`
+
+	`github.com/photowey/hictl/cmd/internal/cmds/schema`
 )
 
 func main() {
