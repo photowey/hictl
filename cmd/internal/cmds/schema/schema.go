@@ -301,6 +301,8 @@ func writeSchemaTmpl(target string, name string, table *db.Table) error {
 	}
 
 	cmdz.FormatSourceCode(schemaTarget)
+	// 解析-依赖
+	cmdz.ResolveDependencies()
 
 	return nil
 }

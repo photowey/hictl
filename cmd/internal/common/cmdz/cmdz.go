@@ -12,3 +12,10 @@ func FormatSourceCode(filename string) {
 		logger.Warnf("Error while running gofmt: %s", err)
 	}
 }
+
+func ResolveDependencies() {
+	cmd := exec.Command("go", "mod", "tidy")
+	if err := cmd.Run(); err != nil {
+		logger.Warnf("running cmd: go mod tidy: %s", err)
+	}
+}
