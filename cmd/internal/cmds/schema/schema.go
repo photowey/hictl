@@ -225,6 +225,10 @@ func populateDatabaseInfo(conf db.Config, databaseName string) (*db.Database, er
 func handleTableColumn(driver *sql.DB, database *db.Database, table *db.Table) error {
 	// handle column
 	rowColumns, err := driver.Query(db.ColumnInfoSql, database.Name, table.Name)
+	defer func(rc *sql.Rows) {
+		_ = rc.Close()
+	}(rowColumns)
+
 	if err != nil {
 		return fmt.Errorf("query table:[%s] column failed, err:%v", table.Name, err)
 	}
@@ -240,7 +244,6 @@ func handleTableColumn(driver *sql.DB, database *db.Database, table *db.Table) e
 		}
 		table.Columns = append(table.Columns, column)
 	}
-	_ = rowColumns.Close()
 
 	return nil
 }
@@ -248,6 +251,10 @@ func handleTableColumn(driver *sql.DB, database *db.Database, table *db.Table) e
 func handleTableIndex(driver *sql.DB, database *db.Database, table *db.Table) error {
 	// handle index
 	indexColumns, err := driver.Query(db.IndexInfoSql, database.Name, table.Name)
+	defer func(ic *sql.Rows) {
+		_ = ic.Close()
+	}(indexColumns)
+
 	if err != nil {
 		return fmt.Errorf("query table:[%s] index failed, err:%v", table.Name, err)
 	}
@@ -261,8 +268,6 @@ func handleTableIndex(driver *sql.DB, database *db.Database, table *db.Table) er
 		}
 		table.Indexs = append(table.Indexs, indexz)
 	}
-
-	_ = indexColumns.Close()
 
 	return nil
 }
