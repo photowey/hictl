@@ -1,12 +1,12 @@
 package main
 
 import (
-	`fmt`
-	`log`
+	"fmt"
+	"log"
 
-	`github.com/spf13/cobra`
+	"github.com/spf13/cobra"
 
-	`github.com/photowey/hictl/cmd/internal/cmds/schema`
+	"github.com/photowey/hictl/cmd/internal/cmds/schema"
 )
 
 func main() {

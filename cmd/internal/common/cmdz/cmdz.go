@@ -1,9 +1,9 @@
 package cmdz
 
 import (
-	`os/exec`
+	"os/exec"
 
-	`github.com/photowey/hictl/pkg/logger`
+	"github.com/photowey/hictl/pkg/logger"
 )
 
 func FormatSourceCode(filename string) {

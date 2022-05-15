@@ -1,15 +1,15 @@
 package banner
 
 import (
-	`io`
-	`io/ioutil`
-	`runtime`
-	`text/template`
+	"io"
+	"io/ioutil"
+	"runtime"
+	"text/template"
 
-	`github.com/photowey/hictl`
-	`github.com/photowey/hictl/cmd/internal/common/helper`
-	`github.com/photowey/hictl/pkg/color`
-	`github.com/photowey/hictl/pkg/logger`
+	"github.com/photowey/hictl"
+	"github.com/photowey/hictl/cmd/internal/common/helper"
+	"github.com/photowey/hictl/pkg/color"
+	"github.com/photowey/hictl/pkg/logger"
 )
 
 type RuntimeReport struct {

@@ -1,10 +1,10 @@
 package helper
 
 import (
-	`os/exec`
-	`strings`
+	"os/exec"
+	"strings"
 
-	`github.com/photowey/hictl/pkg/logger`
+	"github.com/photowey/hictl/pkg/logger"
 )
 
 func MustCheck(err error) {

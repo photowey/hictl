@@ -1,7 +1,7 @@
 package database
 
 import (
-	`database/sql`
+	"database/sql"
 )
 
 // Hictl the config of hictl cmd

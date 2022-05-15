@@ -1,16 +1,16 @@
 package main
 
 import (
-	`log`
+	"log"
 
-	`github.com/photowey/hictl`
-	`github.com/photowey/hictl/cmd/internal/cmds/config`
-	`github.com/photowey/hictl/pkg/logger`
-	`github.com/spf13/cobra`
+	"github.com/photowey/hictl"
+	"github.com/photowey/hictl/cmd/internal/cmds/config"
+	"github.com/photowey/hictl/pkg/logger"
+	"github.com/spf13/cobra"
 
-	`github.com/photowey/hictl/cmd/internal/cmds/schema`
-	`github.com/photowey/hictl/cmd/internal/cmds/version`
-	`github.com/photowey/hictl/cmd/internal/home`
+	"github.com/photowey/hictl/cmd/internal/cmds/schema"
+	"github.com/photowey/hictl/cmd/internal/cmds/version"
+	"github.com/photowey/hictl/cmd/internal/home"
 )
 
 func main() {

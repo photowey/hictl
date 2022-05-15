@@ -1,17 +1,17 @@
 package logger
 
 import (
-	`errors`
-	`fmt`
-	`io`
-	`os`
-	`path/filepath`
-	`sync`
-	`sync/atomic`
-	`text/template`
-	`time`
+	"errors"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"sync"
+	"sync/atomic"
+	"text/template"
+	"time"
 
-	`github.com/photowey/hictl/pkg/color`
+	"github.com/photowey/hictl/pkg/color"
 )
 
 const (
@@ -40,13 +40,10 @@ var (
 	debugMode = os.Getenv("DEBUG_ENABLED") == "1"
 	logLevel  = InfoLevel
 )
-var (
-	errInvalidLogLevel = errors.New("logger: invalid log level")
-)
 
-var (
-	lock = &sync.Mutex{}
-)
+var errInvalidLogLevel = errors.New("logger: invalid log level")
+
+var lock = &sync.Mutex{}
 
 type Record struct {
 	ID       string
@@ -66,6 +63,7 @@ func (log *Logger) Output(w io.Writer) {
 	defer log.lock.Unlock()
 	log.output = color.NewColorWriter(w)
 }
+
 func GetInstance(w io.Writer) *Logger {
 	if nil == instance {
 		lock.Lock()

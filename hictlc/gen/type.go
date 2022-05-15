@@ -1,39 +1,37 @@
 package gen
 
 import (
-	`fmt`
-	`go/token`
-	`go/types`
-	`strings`
+	"fmt"
+	"go/token"
+	"go/types"
+	"strings"
 )
 
-var (
-	globalIdent = names(
-		"AggregateFunc",
-		"As",
-		"Asc",
-		"Client",
-		"config",
-		"Count",
-		"Debug",
-		"Desc",
-		"Driver",
-		"Hook",
-		"Log",
-		"MutateFunc",
-		"Mutation",
-		"Mutator",
-		"Op",
-		"Option",
-		"OrderFunc",
-		"Max",
-		"Mean",
-		"Min",
-		"Sum",
-		"Policy",
-		"Query",
-		"Value",
-	)
+var globalIdent = names(
+	"AggregateFunc",
+	"As",
+	"Asc",
+	"Client",
+	"config",
+	"Count",
+	"Debug",
+	"Desc",
+	"Driver",
+	"Hook",
+	"Log",
+	"MutateFunc",
+	"Mutation",
+	"Mutator",
+	"Op",
+	"Option",
+	"OrderFunc",
+	"Max",
+	"Mean",
+	"Min",
+	"Sum",
+	"Policy",
+	"Query",
+	"Value",
 )
 
 func ValidSchemaName(name string) error {

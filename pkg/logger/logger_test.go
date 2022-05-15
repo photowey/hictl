@@ -1,7 +1,7 @@
 package logger
 
 import (
-	`testing`
+	"testing"
 )
 
 func TestInfo(t *testing.T) {

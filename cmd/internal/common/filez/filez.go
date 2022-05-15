@@ -5,14 +5,14 @@ package filez
 //
 
 import (
-	`os`
-	`path/filepath`
+	"os"
+	"path/filepath"
 
-	`github.com/photowey/hictl/cmd/internal/common/helper`
+	"github.com/photowey/hictl/cmd/internal/common/helper"
 )
 
 func exists(names ...string) bool {
-	var _, err = os.Stat(filepath.Join(names...))
+	_, err := os.Stat(filepath.Join(names...))
 
 	return err == nil || os.IsExist(err)
 }

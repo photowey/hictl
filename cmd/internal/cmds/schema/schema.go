@@ -1,30 +1,30 @@
 package schema
 
 import (
-	`bytes`
-	`database/sql`
-	`errors`
-	`fmt`
-	`io/ioutil`
-	`log`
-	`os`
-	`path/filepath`
-	`strings`
-	`text/template`
-	`unicode`
+	"bytes"
+	"database/sql"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
+	"text/template"
+	"unicode"
 
 	_ "github.com/go-sql-driver/mysql"
-	`github.com/spf13/cobra`
+	"github.com/spf13/cobra"
 
-	`github.com/photowey/hictl`
-	`github.com/photowey/hictl/cmd/internal/common/cmdz`
-	`github.com/photowey/hictl/cmd/internal/common/constant`
-	`github.com/photowey/hictl/cmd/internal/common/filez`
-	`github.com/photowey/hictl/cmd/internal/common/helper`
-	`github.com/photowey/hictl/cmd/internal/common/jsonz`
-	`github.com/photowey/hictl/cmd/internal/common/stringz`
-	db `github.com/photowey/hictl/cmd/internal/database`
-	`github.com/photowey/hictl/hictlc/gen`
+	"github.com/photowey/hictl"
+	"github.com/photowey/hictl/cmd/internal/common/cmdz"
+	"github.com/photowey/hictl/cmd/internal/common/constant"
+	"github.com/photowey/hictl/cmd/internal/common/filez"
+	"github.com/photowey/hictl/cmd/internal/common/helper"
+	"github.com/photowey/hictl/cmd/internal/common/jsonz"
+	"github.com/photowey/hictl/cmd/internal/common/stringz"
+	db "github.com/photowey/hictl/cmd/internal/database"
+	"github.com/photowey/hictl/hictlc/gen"
 )
 
 const (
@@ -46,9 +46,7 @@ const (
 	indexMultiTemplate = "index.Fields(%s),"
 )
 
-var (
-	SkipFields = []string{"created_at", "updated_at"}
-)
+var SkipFields = []string{"created_at", "updated_at"}
 
 func Cmd() *cobra.Command {
 	var target string
@@ -283,7 +281,7 @@ func createDir(target string) error {
 	if target != defaultSchema {
 		return nil
 	}
-	if err := os.WriteFile("ent/generate.go", []byte(genFile), 0644); err != nil {
+	if err := os.WriteFile("ent/generate.go", []byte(genFile), 0o644); err != nil {
 		return fmt.Errorf("creating generate.go file: %w", err)
 	}
 	return nil
@@ -304,7 +302,7 @@ func writeSchemaTmpl(target string, name string, table *db.Table) error {
 	content = strings.ReplaceAll(content, "    \n", "")
 	content = strings.ReplaceAll(content, "\t\n", "")
 	buf := bytes.NewBufferString(content)
-	if err := os.WriteFile(schemaTarget, buf.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(schemaTarget, buf.Bytes(), 0o644); err != nil {
 		return fmt.Errorf("writing file %s: %w", schemaTarget, err)
 	}
 
@@ -415,7 +413,7 @@ func writeMixinTmpl(target string) error {
 		return fmt.Errorf("executing template %s: %w", "mixin", err)
 	}
 	mixinTarget := filepath.Join(target, strings.ToLower(mixin+".go"))
-	if err := os.WriteFile(mixinTarget, buffer.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(mixinTarget, buffer.Bytes(), 0o644); err != nil {
 		return fmt.Errorf("writing file %s: %w", mixinTarget, err)
 	}
 	return nil

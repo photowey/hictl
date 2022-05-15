@@ -1,10 +1,10 @@
 package stringz
 
 import (
-	`strings`
-	`unicode`
+	"strings"
+	"unicode"
 
-	`github.com/go-openapi/inflect`
+	"github.com/go-openapi/inflect"
 )
 
 var (

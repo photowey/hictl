@@ -1,9 +1,9 @@
 package hictl
 
 import (
-	`os`
-	`os/user`
-	`path/filepath`
+	"os"
+	"os/user"
+	"path/filepath"
 )
 
 const (

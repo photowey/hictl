@@ -1,14 +1,14 @@
 package home
 
 import (
-	`bytes`
-	`fmt`
-	`os`
-	`path/filepath`
-	`strings`
+	"bytes"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 
-	`github.com/photowey/hictl`
-	`github.com/photowey/hictl/cmd/internal/common/filez`
+	"github.com/photowey/hictl"
+	"github.com/photowey/hictl/cmd/internal/common/filez"
 )
 
 const (
@@ -29,9 +29,8 @@ func HictlHome() {
 	if filez.FileNotExists(hictlHome, hictlConfig) {
 		buf := bytes.NewBufferString(hictlConfigContent)
 		hictlConfigFile := filepath.Join(hictlHome, strings.ToLower(hictlConfig))
-		if err := os.WriteFile(hictlConfigFile, buf.Bytes(), 0644); err != nil {
+		if err := os.WriteFile(hictlConfigFile, buf.Bytes(), 0o644); err != nil {
 			panic(fmt.Sprintf("writing file %s: %v", hictlConfigFile, err))
 		}
 	}
-
 }

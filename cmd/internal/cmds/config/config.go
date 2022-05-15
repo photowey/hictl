@@ -1,16 +1,16 @@
 package config
 
 import (
-	`io/ioutil`
-	`path/filepath`
-	`strings`
+	"io/ioutil"
+	"path/filepath"
+	"strings"
 
-	`github.com/photowey/hictl`
-	`github.com/photowey/hictl/cmd/internal/common/filez`
-	`github.com/photowey/hictl/cmd/internal/common/helper`
-	`github.com/photowey/hictl/pkg/color`
-	`github.com/photowey/hictl/pkg/logger`
-	`github.com/spf13/cobra`
+	"github.com/photowey/hictl"
+	"github.com/photowey/hictl/cmd/internal/common/filez"
+	"github.com/photowey/hictl/cmd/internal/common/helper"
+	"github.com/photowey/hictl/pkg/color"
+	"github.com/photowey/hictl/pkg/logger"
+	"github.com/spf13/cobra"
 )
 
 func Cmd() *cobra.Command {
